@@ -1,7 +1,8 @@
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 // Close server if there is any uncaught exceptions
-process.on("uncaughtException", err => {
+process.on("uncaughtException", (err) => {
   console.log(err.name, err.message);
   console.log("Uncaught Exception ❌❌❌");
   process.exit(1);
@@ -19,7 +20,7 @@ const server = app.listen(port, () => {
 });
 
 // Close server if there is any unhandled rejection (promises)
-process.on("unhandledRejection", err => {
+process.on("unhandledRejection", (err) => {
   console.log(err.name, err.message);
   console.log("Unhandled Rejection ❌❌❌");
   server.close(() => {
