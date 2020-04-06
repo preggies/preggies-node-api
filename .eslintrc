@@ -4,7 +4,8 @@
 		"plugin:prettier/recommended"
   ],
   "plugins": [
-    "prettier"
+    "prettier",
+    "jest"
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -65,5 +66,6 @@
   "env": {
     "es6": true,
     "node": true,
+    "jest": true
   }
 }

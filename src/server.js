@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // eslint-disable-line no-unused-vars
 
 // Close server if there is any uncaught exceptions
 process.on('uncaughtException', err => {

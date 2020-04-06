@@ -5,11 +5,29 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src --fix"
+    "test": "jest",
+    "lint": "eslint src --fix",
+    "pretest": "npm run lint"
   },
   "author": "Oyemade",
   "license": "ISC",
+  "jest": {
+    "testURL": "http://localhost/",
+    "roots": [
+      "./src/"
+    ],
+    "testMatch": [
+      "**/?(*.)test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js}"
+    ],
+    "coverageReporters": [
+      "html",
+      "text",
+      "text-summary"
+    ]
+  },
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -25,7 +43,9 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "23.8.2",
     "eslint-plugin-prettier": "^3.0.1",
+    "jest": "25.2.7",
     "nodemon": "2.0.2",
     "parcel-bundler": "^1.12.3",
     "prettier": "^1.17.0"
