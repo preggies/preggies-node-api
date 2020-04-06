@@ -1,4 +1,4 @@
-const express = require('express');
+import nanoexpress, { HttpResponse } from 'nanoexpress-pro/cjs';
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -9,7 +9,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
 // Initialize app
-const app = express();
+const app = nanoexpress();
 
 // Implement CORS
 app.use(cors());
@@ -26,19 +26,12 @@ app.use(xss());
 // Logger
 app.use(morgan('dev'));
 
-// Body parser
-app.use(
-  express.json({
-    limit: '10kb',
-  })
-);
-
 // Routes
 
 // Error handlers
-app.all('*', (req, res, next) => {
+app.setNotFoundHandler((req, res): HttpResponse => {
   // If requested route doesnt exist return this
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+return res.send(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler); // Express global error handler
