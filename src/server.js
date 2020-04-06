@@ -1,17 +1,17 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 // Close server if there is any uncaught exceptions
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', err => {
   console.log(err.name, err.message);
-  console.log("Uncaught Exception ❌❌❌");
+  console.log('Uncaught Exception ❌❌❌');
   process.exit(1);
 });
 
 // Environment file
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: './config.env' });
 
-const app = require("./app");
+const app = require('./app');
 
 // Start server
 const port = process.env.port || 2020;
@@ -20,9 +20,9 @@ const server = app.listen(port, () => {
 });
 
 // Close server if there is any unhandled rejection (promises)
-process.on("unhandledRejection", (err) => {
+process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
-  console.log("Unhandled Rejection ❌❌❌");
+  console.log('Unhandled Rejection ❌❌❌');
   server.close(() => {
     process.exit(1);
   });

@@ -1,18 +1,10 @@
 {
   "extends": [
-    "airbnb",
-    "prettier",
-    "plugin:node/recommended"
+    "eslint:recommended",
+		"plugin:prettier/recommended"
   ],
   "plugins": [
     "prettier"
-  ],
-  "strict": 0,
-  "import/no-extraneous-dependencies": [
-    "error",
-    {
-      "devDependencies": true
-    }
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -38,6 +30,40 @@
       {
         "argsIgnorePattern": "req|res|next|val"
       }
-    ]
+    ],
+    "rules": {
+      "new-cap": [
+        2,
+        {
+          "capIsNewExceptions": [
+            "Immutable.Map"
+          ]
+        }
+      ],
+      "strict": 0,
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": true
+        }
+      ]
+    }
+  },
+  "settings": {
+		"import/resolver": {
+			"node": {}
+		}
+	},
+
+	"globals": {
+		"Promise": true,
+		"sandbox": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "env": {
+    "es6": true,
+    "node": true,
   }
 }
