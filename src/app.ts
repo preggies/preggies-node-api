@@ -1,12 +1,12 @@
 import nanoexpress, { HttpResponse } from 'nanoexpress-pro/cjs';
-const morgan = require('morgan');
-const cors = require('cors');
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
+import morgan from 'morgan';
+import cors from 'cors';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
 
-const globalErrorHandler = require('./controllers/errorController');
-const AppError = require('./utils/appError');
+import globalErrorHandler from './controllers/errorController';
+import AppError from './utils/appError';
 
 // Initialize app
 const app = nanoexpress();
@@ -29,11 +29,13 @@ app.use(morgan('dev'));
 // Routes
 
 // Error handlers
-app.setNotFoundHandler((req, res): HttpResponse => {
-  // If requested route doesnt exist return this
-return res.send(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
-});
+app.setNotFoundHandler(
+  (req, res): HttpResponse => {
+    // If requested route doesnt exist return this
+    return res.send(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+  }
+);
 
 app.use(globalErrorHandler); // Express global error handler
 
-module.exports = app;
+export default app;

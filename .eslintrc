@@ -1,71 +1,30 @@
 {
-  "extends": [
-    "eslint:recommended",
-		"plugin:prettier/recommended"
-  ],
-  "plugins": [
-    "prettier",
-    "jest"
-  ],
-  "rules": {
-    "prettier/prettier": "error",
-    "spaced-comment": "off",
-    "no-console": "warn",
-    "consistent-return": "off",
-    "func-names": "off",
-    "object-shorthand": "off",
-    "no-process-exit": "off",
-    "no-param-reassign": "off",
-    "no-return-await": "off",
-    "no-underscore-dangle": "off",
-    "class-methods-use-this": "off",
-    "prefer-destructuring": [
-      "error",
-      {
-        "object": true,
-        "array": false
-      }
-    ],
-    "no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "req|res|next|val"
-      }
-    ],
-    "rules": {
-      "new-cap": [
-        2,
-        {
-          "capIsNewExceptions": [
-            "Immutable.Map"
-          ]
-        }
-      ],
-      "strict": 0,
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          "devDependencies": true
-        }
-      ]
-    }
-  },
-  "settings": {
-		"import/resolver": {
-			"node": {}
-		}
-	},
-
-	"globals": {
-		"Promise": true,
-		"sandbox": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 9
-  },
+  "parser": "@typescript-eslint/parser",
   "env": {
-    "es6": true,
     "node": true,
     "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowExpressions": true
+    }]
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "jest",
+    "@typescript-eslint"
+  ],
+  "globals": {
+    "Promise": true,
+    "sandbox": true
   }
 }

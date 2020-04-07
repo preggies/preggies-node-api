@@ -7,7 +7,7 @@
     "start": "node lib/server.js",
     "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/server.ts",
     "test": "jest",
-    "lint": "eslint src --fix",
+    "lint": "eslint 'src/**/**/*.ts' --fix",
     "clean:build": "rm -rf lib/*",
     "build": "npm run clean:build && tsc",
     "pretest": "npm run lint"
@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "@types/node": "13.11.0",
+    "@typescript-eslint/eslint-plugin": "2.27.0",
+    "@typescript-eslint/parser": "2.27.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.17.2",
