@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 
-import globalErrorHandler from './controllers/errorController';
+import globalErrorHandler from './controllers/errors';
 import AppError from './utils/appError';
 
 // Initialize app
