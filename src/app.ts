@@ -5,8 +5,10 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 
-import globalErrorHandler from './controllers/errors';
+import globalErrorHandler from './api/controllers/errors';
 import AppError from './utils/appError';
+
+import services from './api/services';
 
 // Initialize app
 const app = nanoexpress();
@@ -25,6 +27,12 @@ app.use(xss());
 
 // Logger
 app.use(morgan('dev'));
+
+// Services
+app.use((req, _, next) => {
+  req.locals.services = services(app.get('db'));
+  next();
+});
 
 // Routes
 

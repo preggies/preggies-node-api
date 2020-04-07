@@ -96,7 +96,12 @@ export const conf = {
   ...mongoConfig,
 };
 
-const loader = ({ appConfig = null, base = null, configFiles = null, options = {} }): Config<object> => {
+const loader = ({
+  appConfig = null,
+  base = null,
+  configFiles = null,
+  options = {},
+}): Config<object> => {
   const config = convict({ ...(appConfig || {}), ...(base || {}) }).load(options);
   return configFiles ? config.loadFile(configFiles) : config;
 };
