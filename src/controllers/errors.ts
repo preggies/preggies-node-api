@@ -30,12 +30,11 @@ export default (err: AppError, req, res): void => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log(res); // eslint-disable-line
-    sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     // Configure other error types
 
     sendErrorProd(err, res);
+  } else {
+    sendErrorDev(err, res);
   }
 };

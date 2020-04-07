@@ -3,7 +3,7 @@ module.exports = {
   collectCoverageFrom: [
     "src/**/*.{ts,tsx,js,jsx}"
   ],
-  reporters: ["default", "jest-junit"],
+  reporters: ["default",  /* "jest-junit" */],
   coverageReporters: [
     "html",
     "text",
@@ -28,7 +28,7 @@ module.exports = {
     "**/?(*.)+(spec|test).+(ts|tsx|js)"
   ],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest"
+    "^.+\\.tsx?$": "ts-jest"
   },
   roots: [
     "./src/"

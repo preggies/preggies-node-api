@@ -67,7 +67,7 @@
     "node_modules",
     "babel.config.js",
     "src/**/*.test.*",
-    "ecosystem.config.js",
-    "test"
+    "test",
+    "jest.config.js"
   ]
 }
