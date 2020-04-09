@@ -8,7 +8,7 @@ const config = {
   has: function(name) {
     this.hasOwnProperty(name);
   },
-};
+} as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const mongoose = {
   connect: jest.fn().mockImplementation(
