@@ -1,3 +1,3 @@
-import { Dict, DbClient } from '../../../';
+import { DbClient } from '../../../server';
 
-export default (client: DbClient): Dict => ({});
+export default (client: DbClient): any => ({});

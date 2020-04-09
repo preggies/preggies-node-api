@@ -4,8 +4,8 @@
   "description": "Preggies back end service.",
   "main": "app.js",
   "scripts": {
-    "start": "node lib/server.js",
-    "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/server.ts",
+    "start": "node lib/index.js",
+    "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/index.ts",
     "test": "jest",
     "lint": "eslint 'src/**/**/*.ts' --fix",
     "clean:build": "rm -rf lib/*",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/convict": "4.2.1",
     "@types/jest": "25.2.1",
+    "@types/mongoose": "5.7.9",
     "@types/node": "13.11.0",
     "@typescript-eslint/eslint-plugin": "2.27.0",
     "@typescript-eslint/parser": "2.27.0",

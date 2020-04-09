@@ -19,7 +19,7 @@ const mongoose = {
           : reject(new Error(`Not a valid MongoDB uri ${uri}`));
       })
   ),
-};
+} as any;
 
 describe('MongoDB Connection Handle', () => {
   it('connect successfully with mongo uri', async () => {

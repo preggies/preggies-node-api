@@ -3,9 +3,9 @@ import { Config } from 'convict';
 
 import connect from './connect';
 import queries from './queries';
-import { DbClient, Dict } from '../../../';
+import { DbClient } from '../../../server';
 
-export const schema = (client: DbClient): Dict => queries(client);
+export const schema = (client: DbClient): any => queries(client);
 
 export const close = (mongo: Mongoose): Promise<void> => mongo.disconnect();
 
