@@ -1,0 +1,6 @@
+NODE_ENV=$1
+APP_VERSION=$2
+SERVICE_PORT=4021
+APP_NAME=preggies
+
+docker build -t "$APP_NAME:$APP_VERSION" --build-arg NODE_ENV=$NODE_ENV --build-arg SERVICE_PORT=$SERVICE_PORT .
