@@ -1,6 +1,6 @@
 {
   "name": "preggies-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Preggies back end service.",
   "main": "app.js",
   "scripts": {
@@ -9,10 +9,14 @@
     "test": "jest",
     "lint": "eslint 'src/**/**/*.ts'",
     "clean:build": "rm -rf lib/*",
-    "build": "npm run clean:build && tsc",
-    "pretest": "npm run lint"
+    "build": "yarn clean:build && tsc",
+    "pretest": "yarn lint"
   },
-  "author": "Oyemade",
+  "author": {
+    "name": "Preggies Dev Team",
+    "email": "team@preggies.co",
+    "url": "https://preggies.co/about"
+  },
   "license": "ISC",
   "dependencies": {
     "convict": "5.2.0",
