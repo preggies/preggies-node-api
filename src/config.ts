@@ -40,6 +40,22 @@ export const conf = {
     default: 'development',
     env: 'NODE_ENV',
   },
+  swagger: {
+    title: {
+      doc: "Application's swagger title",
+      format: String,
+      default: 'Microservice Boilerplate',
+      env: 'SWAGGER_TITLE',
+      arg: 'swagger-title',
+    },
+    description: {
+      doc: "Application's swagger description",
+      format: String,
+      default: 'Boilerplate microservice scaffold',
+      env: 'SWAGGER_DESCRIPTION',
+      arg: 'swagger-description',
+    },
+  },
   server: {
     hostname: {
       doc: 'Application hostname',
@@ -75,6 +91,13 @@ export const conf = {
       default: '',
       env: 'TLS_CA',
       arg: 'tls-ca',
+    },
+    secure: {
+      doc: 'Apply tls security layer. Disable if http is preferred',
+      format: Boolean,
+      default: true,
+      env: 'TLS',
+      arg: 'tls',
     },
   },
   jwt: {
