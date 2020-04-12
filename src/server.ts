@@ -25,7 +25,19 @@ const https = config.get('server.secure') && {
 };
 
 // Initialize app
-const app = nanoexpress({ https });
+const app = nanoexpress({
+  https,
+  swagger: {
+    openapi: '3.0.0',
+    info: {
+      title: config.get('swagger.title'),
+      version: '1.0.0',
+      description: config.get('swagger.description'),
+    },
+    host: config.get('server.hostname'),
+    basePath: '/docs',
+  },
+});
 
 app.db = dbConnect(config);
 app.schema = schema(app.db);
