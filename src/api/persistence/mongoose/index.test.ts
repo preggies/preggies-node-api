@@ -1,5 +1,6 @@
 import dbConnect, { close, schema } from '.';
 import loadConfig from '../../../config';
+import { DbClient } from '../../../server';
 
 jest.mock('./connect', () => ({
   __esModule: true,
@@ -37,7 +38,7 @@ describe('mongoose', () => {
     });
 
     it('Successfully create a schema', async () => {
-      expect(await schema({})).toBeTruthy();
+      expect(await schema({} as DbClient)).toBeTruthy();
     });
   });
 });
