@@ -5,7 +5,7 @@ import connect from './connect';
 import queries from './queries';
 import { DbClient } from '../../../server';
 
-export const schema = (client: DbClient): any => queries(client);
+export const schema = (client: DbClient): any => queries(client); // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export const close = (mongo: Mongoose): Promise<void> => mongo.disconnect();
 

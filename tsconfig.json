@@ -68,6 +68,8 @@
     "babel.config.js",
     "src/**/*.test.*",
     "test",
-    "jest.config.js"
+    "jest.config.js",
+    "rollup.config.js",
+    "lib"
   ]
 }
