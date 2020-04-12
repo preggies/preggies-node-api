@@ -7,7 +7,7 @@
     "start": "node lib/index.js",
     "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/index.ts",
     "test": "jest",
-    "lint": "eslint 'src/**/**/*.ts' --fix",
+    "lint": "eslint 'src/**/**/*.ts'",
     "clean:build": "rm -rf lib/*",
     "build": "npm run clean:build && tsc",
     "pretest": "npm run lint"
