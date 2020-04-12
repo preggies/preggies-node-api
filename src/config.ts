@@ -76,6 +76,13 @@ export const conf = {
       env: 'TLS_CA',
       arg: 'tls-ca',
     },
+    secure: {
+      doc: 'Apply tls security layer. Disable if http is preferred',
+      format: Boolean,
+      default: true,
+      env: 'TLS',
+      arg: 'tls',
+    },
   },
   jwt: {
     secret: {

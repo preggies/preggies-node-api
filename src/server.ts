@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import { Mongoose } from 'mongoose';
+import { resolve } from 'path';
 import dbConnect, { schema } from './api/persistence/mongoose';
 
 import globalErrorHandler from './api/controllers/errors';
@@ -14,10 +15,17 @@ import loadConfig from './config';
 
 import services from './api/services';
 
-// Initialize app
-const app = nanoexpress();
+const configFile = resolve(__dirname, `../config/${String(process.env.NODE_ENV)}.json`);
+const config = loadConfig(configFile);
 
-const config = loadConfig('');
+/* eslint-disable @typescript-eslint/camelcase */
+const https = config.get('server.secure') && {
+  key_file_name: resolve(__dirname, config.get('server.tlsKey')),
+  cert_file_name: resolve(__dirname, config.get('server.tlsCert')),
+};
+
+// Initialize app
+const app = nanoexpress({ https });
 
 app.db = dbConnect(config);
 app.schema = schema(app.db);
@@ -44,7 +52,9 @@ app.use((req, _, next) => {
   next();
 });
 
-export type DbClient = Promise<Mongoose> | any;
+export const PORT = config.get('server.port');
+
+export type DbClient = Promise<Mongoose> | any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 // Routes
 
