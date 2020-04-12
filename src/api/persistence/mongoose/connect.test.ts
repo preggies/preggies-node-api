@@ -19,7 +19,7 @@ const mongoose = {
           : reject(new Error(`Not a valid MongoDB uri ${uri}`));
       })
   ),
-} as any;
+} as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 describe('MongoDB Connection Handle', () => {
   it('connect successfully with mongo uri', async () => {

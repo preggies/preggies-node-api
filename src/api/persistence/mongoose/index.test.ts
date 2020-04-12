@@ -21,7 +21,7 @@ jest.mock('./queries', () => ({
 describe('mongoose', () => {
   const mongo = {
     disconnect: jest.fn().mockResolvedValue(true),
-  } as any;
+  } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   const config = loadConfig('', {});
 
