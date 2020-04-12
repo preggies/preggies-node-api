@@ -13,14 +13,14 @@ RUN apk add --no-cache git
 WORKDIR $APP_DIR
 COPY package.json $APP_DIR
 
-RUN yarn install --prod
+RUN yarn install
 
 COPY . .
 
 RUN yarn build
 
 # Production container
-FROM node:12.14.1-alpine
+FROM node:12.16.2-alpine
 
 ARG NODE_ENV
 ARG SERVICE_PORT
@@ -43,9 +43,12 @@ RUN addgroup -g $SERVICE_GROUP_ID $SERVICE_GROUP \
 USER $SERVICE_USER
 
 COPY --chown=$SERVICE_USER:$SERVICE_GROUP --from=build $APP_DIR/lib $APP_DIR/lib
-COPY --chown=$SERVICE_USER:$SERVICE_GROUP --from=build $APP_DIR/node_modules $APP_DIR/node_modules
+# COPY --chown=$SERVICE_USER:$SERVICE_GROUP --from=build $APP_DIR/node_modules $APP_DIR/node_modules
 COPY --chown=$SERVICE_USER:$SERVICE_GROUP --from=build $APP_DIR/package.json $APP_DIR/package.json
 COPY --chown=$SERVICE_USER:$SERVICE_GROUP --from=build $APP_DIR/yarn.lock $APP_DIR/yarn.lock
+
+RUN yarn install --prod --cache-folder /tmp/ycache; rm -Rf /tmp/ycache
+
 
 EXPOSE $SERVICE_PORT
 
