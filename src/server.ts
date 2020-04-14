@@ -14,6 +14,7 @@ import globalErrorHandler from './api/controllers/errors';
 import AppError from './utils/appError';
 import './env';
 import loadConfig from './config';
+import monitoring from './api/controllers/monitoring';
 
 import services from './api/services';
 
@@ -58,6 +59,8 @@ app.use((req: PreggiesRequest, _, next) => {
   req.services = serve;
   next();
 });
+
+app.use('/monitoring', monitoring);
 
 // app.use();
 
