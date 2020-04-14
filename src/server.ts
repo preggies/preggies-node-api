@@ -8,15 +8,15 @@ import { Mongoose } from 'mongoose';
 import https from 'https';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import dbConnect, { schema } from './api/persistence/mongoose';
+import dbConnect, { schema } from './persistence/mongoose';
 
-import globalErrorHandler from './api/controllers/errors';
+import globalErrorHandler from './controllers/errors';
 import AppError from './utils/appError';
 import './env';
 import loadConfig from './config';
-import monitoring from './api/controllers/monitoring';
+import monitoring from './controllers/monitoring';
 
-import services from './api/services';
+import services from './services';
 
 export type DbClient = Promise<Mongoose>;
 
