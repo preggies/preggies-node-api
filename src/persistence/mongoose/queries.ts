@@ -1,3 +1,7 @@
-import { DbClient } from '../../server';
+import { DbClient, Dict } from '../../utils/args';
 
-export default (client: DbClient): any => ({}); // eslint-disable-line @typescript-eslint/no-explicit-any
+import users from './User/queries';
+
+export default (client: DbClient): Dict => ({
+  users: users(client),
+});
