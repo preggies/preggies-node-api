@@ -4,25 +4,26 @@ import cors from 'cors';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
-import { Mongoose } from 'mongoose';
 import https from 'https';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import dbConnect, { schema } from './persistence/mongoose';
+import Joi from '@hapi/joi';
+import json from 'fast-json-stringify';
+
+import dbConnect, { schema } from './persistence/mongoose/utils';
 
 import globalErrorHandler from './controllers/errors';
 import AppError from './utils/appError';
 import './env';
 import loadConfig from './config';
-import monitoring from './controllers/monitoring';
 
 import services from './services';
-
-export type DbClient = Promise<Mongoose>;
+import routes from './routes';
+import { DbClient, Dict } from './utils/args';
 
 interface PreggiesApp extends Application {
   db?: DbClient;
-  schema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  schema?: Dict;
 }
 
 interface PreggiesRequest extends Request {
@@ -40,10 +41,11 @@ const secure = config.get('server.secure') && {
 
 // Initialize app
 const app: PreggiesApp = express();
-
 app.db = dbConnect(config);
 app.schema = schema(app.db);
 const serve = services(app.schema);
+
+const validator = Joi;
 
 app.use(cors());
 
@@ -55,14 +57,15 @@ app.use(xss());
 
 app.use(morgan('dev'));
 
+const availableRoutes = routes({ services: serve, config, validator, json });
+Object.keys(availableRoutes).forEach(path => {
+  app.use(path, availableRoutes[path]);
+});
+
 app.use((req: PreggiesRequest, _, next) => {
   req.services = serve;
   next();
 });
-
-app.use('/monitoring', monitoring);
-
-// app.use();
 
 export const PORT = config.get('server.port');
 
