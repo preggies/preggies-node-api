@@ -1,7 +1,5 @@
 import { Router } from 'express';
 
-// const router = Router();
-
 import monitoringRoute, { MOUNT_POINT as monitoring } from './monitoring/route';
 import usersRoutes, { MOUNT_POINT as users } from './users/routes';
 

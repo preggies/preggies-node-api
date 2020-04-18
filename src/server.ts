@@ -1,10 +1,9 @@
-import express, { Request, Application } from 'express';
+import express, { Request, Application, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
-import https from 'https';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import Joi from '@hapi/joi';
@@ -34,7 +33,7 @@ const configFile = resolve(__dirname, `../config/${String(process.env.NODE_ENV)}
 const config = loadConfig(configFile);
 
 /* eslint-disable @typescript-eslint/camelcase */
-const secure = config.get('server.secure') && {
+export const secure = config.get('server.secure') && {
   key: readFileSync(resolve(__dirname, config.get('server.tlsKey'))),
   cert: readFileSync(resolve(__dirname, config.get('server.tlsCert'))),
 };
@@ -57,15 +56,20 @@ app.use(xss());
 
 app.use(morgan('dev'));
 
+app.use((_, res: Response, next: NextFunction) => {
+  res.contentType('application/json');
+  next();
+});
+
 const availableRoutes = routes({ services: serve, config, validator, json });
 Object.keys(availableRoutes).forEach(path => {
   app.use(path, availableRoutes[path]);
 });
 
-app.use((req: PreggiesRequest, _, next) => {
-  req.services = serve;
-  next();
-});
+// app.use((req: PreggiesRequest, _, next) => {
+//   req.services = serve;
+//   next();
+// });
 
 export const PORT = config.get('server.port');
 
@@ -88,11 +92,4 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-const server = https.createServer(
-  {
-    ...(secure || {}),
-  },
-  app
-);
-
-export default server;
+export default app;
