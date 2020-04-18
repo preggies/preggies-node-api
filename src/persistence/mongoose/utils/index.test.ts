@@ -1,6 +1,6 @@
 import dbConnect, { close, schema } from '.';
-import loadConfig from '../../config';
-import { DbClient } from '../../server';
+import loadConfig from '../../../config';
+import { DbClient } from '../../../utils/args';
 
 jest.mock('./connect', () => ({
   __esModule: true,
@@ -14,7 +14,7 @@ jest.mock('./connect', () => ({
   ),
 }));
 
-jest.mock('./queries', () => ({
+jest.mock('../queries', () => ({
   __esModule: true,
   default: jest.fn().mockImplementation(client => (client ? true : false)),
 }));
