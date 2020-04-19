@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import monitoringRoute, { MOUNT_POINT as monitoring } from './monitoring/route';
+import monitoringRoute, { MOUNT_POINT as monitoring } from './monitoring/routes';
 import usersRoutes, { MOUNT_POINT as users } from './users/routes';
 
 export default ({ services, config, validator, json }): object => ({
