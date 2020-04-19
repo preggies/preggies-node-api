@@ -1,8 +1,8 @@
 import errors from './errors';
-import AppError from '../utils/appError';
+import AppError from '../utils/errors';
 
 describe('Error Controller', () => {
-  const err = new AppError('Error occured', 500);
+  const err = new AppError('Error occured', 500, 'error');
   const res = {
     status: jest.fn().mockReturnValue({
       json: jest.fn(),

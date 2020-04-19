@@ -12,7 +12,7 @@ import json from 'fast-json-stringify';
 import dbConnect, { schema } from './persistence/mongoose/utils';
 
 import globalErrorHandler from './controllers/errors';
-import AppError from './utils/appError';
+import AppError from './utils/errors';
 import './env';
 import loadConfig from './config';
 
@@ -56,6 +56,8 @@ app.use(xss());
 
 app.use(morgan('dev'));
 
+app.use(express.json());
+
 app.use((_, res: Response, next: NextFunction) => {
   res.contentType('application/json');
   next();
@@ -72,12 +74,6 @@ Object.keys(availableRoutes).forEach(path => {
 // });
 
 export const PORT = config.get('server.port');
-
-app.use(
-  express.json({
-    limit: '10kb',
-  })
-);
 
 app.all('*', (req, _, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
