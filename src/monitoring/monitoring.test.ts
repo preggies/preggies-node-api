@@ -1,5 +1,5 @@
 import application from '../../test/utils/requestHelpers';
-import { MOUNT_POINT } from './route';
+import { MOUNT_POINT } from './routes';
 
 let app, request;
 
