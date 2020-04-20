@@ -12,6 +12,7 @@
     "prebuild": "yarn clean",
     "rollup": "rollup -c",
     "lint": "eslint 'src/**/**/*.ts'",
+    "lint:ci": "eslint 'src/**/**/**/*.ts' --format junit -o test/reports/junit/js-lint-results.xml",
     "clean": "rm -rf lib",
     "build": "yarn rollup && tsc",
     "pretest": "yarn lint"
