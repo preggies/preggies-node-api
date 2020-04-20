@@ -7,7 +7,8 @@
   "scripts": {
     "start": "NODE_ENV=development node lib/index.js",
     "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/index.ts",
-    "test": "jest --no-cache",
+    "test": "jest --runInBand --no-cache",
+    "test:ci": "jest --coverage --reporters=default --reporters=jest-junit --coverageReporters=text-lcov | coveralls",
     "prebuild": "yarn clean",
     "rollup": "rollup -c",
     "lint": "eslint 'src/**/**/*.ts'",
@@ -46,6 +47,8 @@
     "@types/node": "13.11.0",
     "@typescript-eslint/eslint-plugin": "2.27.0",
     "@typescript-eslint/parser": "2.27.0",
+    "@typescript-eslint/typescript-estree": "2.28.0",
+    "coveralls": "3.0.11",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.17.2",
@@ -85,5 +88,9 @@
       "eslint --fix",
       "yarn test"
     ]
+  },
+  "jest-junit": {
+    "outputDirectory": "./test/reports/junit",
+    "outputName": "./js-test-results.xml"
   }
 }
