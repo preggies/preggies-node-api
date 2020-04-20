@@ -2,12 +2,12 @@ declare global {
   namespace jest {
     interface Matchers<R> {
       containExactly: (array: any[]) => CustomMatcherResult;
-      toBeValidUUID: (value: string) => CustomMatcherResult;
+      toBeValidUUID: () => CustomMatcherResult;
     }
 
     interface Expect {
       containExactly: (array: any[]) => CustomMatcherResult;
-      toBeValidUUID: (value: string) => CustomMatcherResult;
+      toBeValidUUID: () => CustomMatcherResult;
     }
   }
 }

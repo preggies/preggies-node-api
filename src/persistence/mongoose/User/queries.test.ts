@@ -6,20 +6,9 @@ import queries from './queries';
 import mongooseConnect from '../utils/';
 import { dbConfig as config } from '../../../config';
 import { getFields } from '../../../../test/utils/queryHelpers';
+import { verifyUser, verifyResponse } from '../../../../test/helpers/users';
 
 let db, userQueries;
-
-const verifyUser = (user): void => {
-  ['fullname', 'email', 'meta', 'uuid', 'dob'].forEach(k => {
-    expect(user).toHaveProperty(k);
-  });
-};
-
-const verifyResponse = (user, payload): void => {
-  ['meta.active', 'fullname', 'email', 'dob'].forEach(k => {
-    expect(user[k]).toEqual(payload[k]);
-  });
-};
 
 describe('Users queries', () => {
   beforeAll(async () => {
