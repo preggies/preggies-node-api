@@ -1,3 +1,5 @@
+import { metaResponseSchema } from '../utils/schemas';
+
 export default {
   title: 'Users document',
   type: 'object',
@@ -21,7 +23,9 @@ export default {
           dob: {
             description: 'Date of birth',
             type: 'string',
+            format: 'date-time',
           },
+          ...metaResponseSchema,
         },
       },
     },

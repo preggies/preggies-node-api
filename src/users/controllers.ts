@@ -24,7 +24,11 @@ export const getUser = ({
   try {
     res.status(200).end(await services[ROUTE_NAME].findById({ payload: { uuid }, json }));
   } catch (e) {
-    next(e);
+    if (e.name === 'NotFound') {
+      res.status(e.statusCode).end(e.message);
+    } else {
+      next(e);
+    }
   }
 };
 
@@ -37,9 +41,13 @@ export const getAllUser = ({
   next: NextFunction
 ): Promise<void> => {
   try {
-    res.status(200).end(await services[ROUTE_NAME].findAll({ json })); // json(jsonSchema)({ users }));
+    res.status(200).end(await services[ROUTE_NAME].findAll({ json }));
   } catch (e) {
-    next(e);
+    if (e.name === 'NotFound') {
+      res.status(e.statusCode).end(e.message);
+    } else {
+      next(e);
+    }
   }
 };
 
@@ -63,6 +71,14 @@ export const createUser = ({
   try {
     res.status(201).end(await services[ROUTE_NAME].create({ payload, json }));
   } catch (e) {
-    next(e);
+    if (e.name === 'ServerError') {
+      res.status(e.statusCode).end(e.message);
+    } else if (e.name === 'DuplicateError') {
+      res.status(e.statusCode).end(e.message);
+    } else if (e.name === 'NotPersisted') {
+      res.status(e.statusCode).end(e.message);
+    } else {
+      next(e);
+    }
   }
 };

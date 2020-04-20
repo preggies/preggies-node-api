@@ -1,4 +1,5 @@
 import services from '../services';
+import { NotFound } from '../utils/errors';
 
 const user = {
   fullname: 'Bolatan Ibrahim',
@@ -36,7 +37,7 @@ const db = {
             uuid
           )
             ? resolve(user)
-            : reject(new Error('No matching document found.'));
+            : reject(new NotFound());
         })
     ),
     create: jest.fn().mockImplementation(
@@ -86,7 +87,7 @@ describe('Services: Users', () => {
 
       await expect(
         users.findById({ payload: { uuid: 'bdhh-ggdcs-3432' }, json })
-      ).rejects.toThrowError('No matching document found.');
+      ).rejects.toThrowError('{"error":"Not Found."}');
     });
   });
 
@@ -110,7 +111,7 @@ describe('Services: Users', () => {
       };
       const { users } = services(db);
 
-      await expect(users.findAll({ json })).rejects.toThrowError('Could not find users');
+      await expect(users.findAll({ json })).rejects.toThrowError('{"error":"Not Found."}');
     });
   });
 });

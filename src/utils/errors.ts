@@ -18,10 +18,36 @@ class PregiesError extends Error {
 
 export default class AppError extends PregiesError {}
 
-export class DuplicateError extends PregiesError {}
+export class DuplicateError extends PregiesError {
+  constructor(
+    message = '{"error":"Duplicate Entry for unique field."}',
+    statusCode = 422,
+    status = 'error'
+  ) {
+    super(message, statusCode, status);
+  }
+}
 
 export class Mismatch extends PregiesError {}
 
-export class NotFound extends PregiesError {}
+export class NotPersisted extends PregiesError {
+  constructor(message, statusCode = 422, status = 'error') {
+    super(`{"error":"${message} not created."}`, statusCode, status);
+  }
+}
 
-export class ServerError extends PregiesError {}
+export class NotFound extends PregiesError {
+  constructor(message = '{"error":"Not Found."}', statusCode = 404, status = 'error') {
+    super(message, statusCode, status);
+  }
+}
+
+export class ServerError extends PregiesError {
+  constructor(
+    message = '{"error":"Something else went wrong."}',
+    statusCode = 500,
+    status = 'error'
+  ) {
+    super(message, statusCode, status);
+  }
+}
