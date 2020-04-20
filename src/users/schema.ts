@@ -1,4 +1,5 @@
 import { ObjectSchema } from 'joi';
+import { makeMetaRequestPayloadSchema } from '../utils/schemas';
 
 export default (validator): ObjectSchema =>
   validator.object().keys({
@@ -6,4 +7,6 @@ export default (validator): ObjectSchema =>
     email: validator.string().email(),
     password: validator.string().regex(/\w{6,}/),
     age: validator.number().min(1),
+    dob: validator.date().iso(),
+    meta: makeMetaRequestPayloadSchema(validator),
   });
