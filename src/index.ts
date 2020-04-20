@@ -2,8 +2,6 @@ import app, { PORT, secure } from './server';
 
 /* eslint-disable no-console */
 (async (): Promise<void> => {
-  // Start server
-  // console.log(await app.db); // eslint-disable-line
   const server = secure
     ? require('https').createServer(
         {
