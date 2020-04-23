@@ -15,6 +15,7 @@
     "lint:ci": "eslint 'src/**/**/**/*.ts' --format junit -o test/reports/junit/js-lint-results.xml",
     "clean": "rm -rf lib",
     "build": "yarn rollup && tsc",
+    "tsoa:gen": "yarn tsoa swagger -c ./tsoa.json && yarn tsoa routes -c ./tsoa.json",
     "pretest": "yarn lint"
   },
   "author": {
@@ -35,7 +36,6 @@
     "https": "1.0.0",
     "mongoose": "^5.8.7",
     "morgan": "^1.9.1",
-    "swagger-ui-dist": "^3.23.6",
     "uuid": "3.3.2",
     "xss-clean": "^0.1.1"
   },
@@ -70,6 +70,8 @@
     "rollup-plugin-terser": "5.3.0",
     "rollup-plugin-typescript2": "0.27.0",
     "supertest": "4.0.2",
+    "swagger-ui-express": "4.1.4",
+    "tsoa": "2.5.14",
     "ts-jest": "25.3.1",
     "ts-node": "8.8.2",
     "typescript": "3.8.3",

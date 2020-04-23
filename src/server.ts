@@ -8,7 +8,9 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import Joi from '@hapi/joi';
 import json from 'fast-json-stringify';
+// import swaggerUi from 'swagger-ui-express';
 
+// import swaggerDocument from './swagger';
 import dbConnect, { schema } from './persistence/mongoose/utils';
 
 import globalErrorHandler from './controllers/errors';
@@ -17,7 +19,7 @@ import './env';
 import loadConfig from './config';
 
 import services from './services';
-import routes from './routes';
+import routes from './route';
 import { DbClient, Dict } from './utils/args';
 
 interface PreggiesApp extends Application {
@@ -68,10 +70,12 @@ Object.keys(availableRoutes).forEach(path => {
   app.use(path, availableRoutes[path]);
 });
 
-// app.use((req: PreggiesRequest, _, next) => {
-//   req.services = serve;
-//   next();
-// });
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument(config)));
+
+app.use((req: PreggiesRequest, _, next) => {
+  req.services = serve;
+  next();
+});
 
 export const PORT = config.get('server.port');
 

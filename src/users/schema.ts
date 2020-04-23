@@ -6,7 +6,6 @@ export default (validator): ObjectSchema =>
     fullname: validator.string().max(70),
     email: validator.string().email(),
     password: validator.string().regex(/\w{6,}/),
-    age: validator.number().min(1),
     dob: validator.date().iso(),
     meta: makeMetaRequestPayloadSchema(validator),
   });
