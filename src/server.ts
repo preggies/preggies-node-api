@@ -19,7 +19,7 @@ import './env';
 import loadConfig from './config';
 
 import services from './services';
-import routes from './route';
+import routes from './routes';
 import { DbClient, Dict } from './utils/args';
 
 interface PreggiesApp extends Application {
