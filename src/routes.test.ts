@@ -10,5 +10,9 @@ describe('./routes', () => {
     it('should declare routes', () => {
       expect(routes({ services, config, validator, json })).toBeDefined();
     });
+
+    it('should return routes as object', () => {
+      expect(routes({ services, config, validator, json })).toBeInstanceOf(Object);
+    });
   });
 });

@@ -7,5 +7,9 @@ describe('./services', () => {
     it('should declare services', () => {
       expect(services(db)).toBeDefined();
     });
+
+    it('should return services as object', () => {
+      expect(services(db)).toBeInstanceOf(Object);
+    });
   });
 });
