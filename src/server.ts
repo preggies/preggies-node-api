@@ -1,27 +1,30 @@
-import express, { Request, Application } from 'express';
+import express, { Request, Application, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
-import { Mongoose } from 'mongoose';
-import https from 'https';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import dbConnect, { schema } from './api/persistence/mongoose';
+import Joi from '@hapi/joi';
+import json from 'fast-json-stringify';
+// import swaggerUi from 'swagger-ui-express';
 
-import globalErrorHandler from './api/controllers/errors';
-import AppError from './utils/appError';
+// import swaggerDocument from './swagger';
+import dbConnect, { schema } from './persistence/mongoose/utils';
+
+import globalErrorHandler from './controllers/errors';
+import AppError from './utils/errors';
 import './env';
 import loadConfig from './config';
 
-import services from './api/services';
-
-export type DbClient = Promise<Mongoose>;
+import services from './services';
+import routes from './routes';
+import { DbClient, Dict } from './utils/args';
 
 interface PreggiesApp extends Application {
   db?: DbClient;
-  schema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  schema?: Dict;
 }
 
 interface PreggiesRequest extends Request {
@@ -32,17 +35,18 @@ const configFile = resolve(__dirname, `../config/${String(process.env.NODE_ENV)}
 const config = loadConfig(configFile);
 
 /* eslint-disable @typescript-eslint/camelcase */
-const secure = config.get('server.secure') && {
+export const secure = config.get('server.secure') && {
   key: readFileSync(resolve(__dirname, config.get('server.tlsKey'))),
   cert: readFileSync(resolve(__dirname, config.get('server.tlsCert'))),
 };
 
 // Initialize app
 const app: PreggiesApp = express();
-
 app.db = dbConnect(config);
 app.schema = schema(app.db);
 const serve = services(app.schema);
+
+const validator = Joi;
 
 app.use(cors());
 
@@ -54,20 +58,26 @@ app.use(xss());
 
 app.use(morgan('dev'));
 
+app.use(express.json());
+
+app.use((_, res: Response, next: NextFunction) => {
+  res.contentType('application/json');
+  next();
+});
+
+const availableRoutes = routes({ services: serve, config, validator, json });
+Object.keys(availableRoutes).forEach(path => {
+  app.use(path, availableRoutes[path]);
+});
+
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument(config)));
+
 app.use((req: PreggiesRequest, _, next) => {
   req.services = serve;
   next();
 });
 
-// app.use();
-
 export const PORT = config.get('server.port');
-
-app.use(
-  express.json({
-    limit: '10kb',
-  })
-);
 
 app.all('*', (req, _, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
@@ -82,11 +92,4 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-const server = https.createServer(
-  {
-    ...(secure || {}),
-  },
-  app
-);
-
-export default server;
+export default app;

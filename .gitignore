@@ -68,3 +68,6 @@ typings/
 *.DS_Store
 
 lib
+
+# jest-junit report file
+*.xml

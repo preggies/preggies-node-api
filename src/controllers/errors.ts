@@ -1,6 +1,6 @@
 // Error response in development environment
 
-import AppError from 'src/utils/appError';
+import AppError from 'src/utils/errors';
 
 const sendErrorDev = (err: AppError, res): void => {
   res.status(err.statusCode).json({

@@ -1,18 +1,31 @@
-import app, { PORT } from './server';
+import app, { PORT, secure } from './server';
 
 /* eslint-disable no-console */
-((): void => {
-  // Start server
-  const server = app.listen(PORT, (): void => {
+(async (): Promise<void> => {
+  const server = secure
+    ? require('https').createServer(
+        {
+          ...(secure || {}),
+        },
+        app
+      )
+    : require('http').createServer(app);
+
+  server.listen(PORT, (): void => {
     console.log(`Server running on port ${PORT}`);
   });
 
   // Close server if there is any unhandled rejection (promises)
-  process.on('unhandledRejection', (err: Error): void => {
-    console.log(err.name, err.message);
-    console.log('Unhandled Rejection ❌❌❌');
+  process.on(
+    'unhandledRejection',
+    async (err: Error): Promise<void> => {
+      console.log(err.name, err.message);
+      console.log('Unhandled Rejection ❌❌❌');
 
-    server.close();
-    process.exit(1);
-  });
+      const db = await app.db;
+      await db.disconnect();
+      server.close();
+      process.exit(1);
+    }
+  );
 })();
