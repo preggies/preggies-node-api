@@ -13,8 +13,8 @@ import json from 'fast-json-stringify';
 // import swaggerDocument from './swagger';
 import dbConnect, { schema } from './persistence/mongoose/utils';
 
-import globalErrorHandler from './controllers/errors';
-import AppError from './utils/errors';
+import globalErrorHandler from './errors/controller';
+import NotFound from './utils/errors';
 import './env';
 import loadConfig from './config';
 
@@ -79,8 +79,8 @@ app.use((req: PreggiesRequest, _, next) => {
 
 export const PORT = config.get('server.port');
 
-app.all('*', (req, _, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+app.all('*', (req: PreggiesRequest, _: Response, next: NextFunction): void => {
+  next(new NotFound(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler);
