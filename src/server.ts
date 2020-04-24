@@ -40,7 +40,6 @@ export const secure = config.get('server.secure') && {
   cert: readFileSync(resolve(__dirname, config.get('server.tlsCert'))),
 };
 
-// Initialize app
 const app: PreggiesApp = express();
 app.db = dbConnect(config);
 app.schema = schema(app.db);
@@ -60,7 +59,7 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
-app.use((_, res: Response, next: NextFunction) => {
+app.use((_: Request, res: Response, next: NextFunction) => {
   res.contentType('application/json');
   next();
 });
