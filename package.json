@@ -5,8 +5,8 @@
   "module": "lib/index.es.js",
   "main": "lib/index.js",
   "scripts": {
-    "start": "NODE_ENV=development node lib/index.js",
-    "dev": "nodemon --delay 20ms --exec NODE_ENV=development ts-node -- src/index.ts",
+    "start": "NODE_ENV=production node lib/index.js",
+    "dev": "nodemon --delay 200ms --exec NODE_ENV=production ts-node -- src/index.ts",
     "test": "jest --runInBand --no-cache",
     "test:ci": "jest --coverage --reporters=default --reporters=jest-junit --coverageReporters=text-lcov | coveralls",
     "prebuild": "yarn clean",

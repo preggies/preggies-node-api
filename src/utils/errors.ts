@@ -2,6 +2,7 @@ class PregiesError extends Error {
   statusCode: number;
   status: string;
   isOperational: boolean;
+  contentType: string;
 
   constructor(message, statusCode, status = 'fail') {
     super(message);
@@ -9,6 +10,7 @@ class PregiesError extends Error {
     this.statusCode = statusCode;
     this.status = status;
     this.isOperational = true;
+    this.contentType = 'application/json';
 
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
@@ -37,8 +39,8 @@ export class NotPersisted extends PregiesError {
 }
 
 export class NotFound extends PregiesError {
-  constructor(message = '{"error":"Not Found."}', statusCode = 404, status = 'error') {
-    super(message, statusCode, status);
+  constructor(message = '{"error":"Not Found."}') {
+    super(message, 404, 'error');
   }
 }
 
