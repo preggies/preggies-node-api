@@ -1,40 +1,44 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import uuid from 'uuid';
+import { PaginateModel, Document, Schema, SchemaOptions, model } from 'mongoose';
+import leanVirtuals from 'mongoose-lean-virtuals';
+import paginate from 'mongoose-paginate-v2';
+import { Persistable, MetaSchema } from '../schema';
 
-interface MetaFields {
-  active: boolean;
-  updated?: Date;
-  created?: Date;
-}
-interface UserFields {
-  uuid?: string;
+interface UserFields extends Persistable {
   fullname: string;
   email: string;
   dob: Date;
-  meta: MetaFields;
+  password: string;
+  role: string;
 }
 
 export interface UserI extends UserFields, Document {}
 
-export const MetaSchema: Schema = new mongoose.Schema(
-  {
-    active: { type: Boolean, default: true },
-    updated: { type: Date },
-    created: { type: Date },
+export const DefaultSchemaOptions: SchemaOptions = {
+  selectPopulatedPaths: false,
+  bufferCommands: false,
+  toObject: {
+    getters: true,
+    versionKey: false,
   },
-  { _id: false }
+};
+
+const UserSchema = new Schema(
+  {
+    fullname: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, required: true },
+    dob: { type: Date },
+    meta: { type: MetaSchema },
+  },
+  DefaultSchemaOptions
 );
 
-const UserSchema = new mongoose.Schema({
-  uuid: { type: String, default: uuid.v4 },
-  fullname: { type: String, required: true, trim: true },
-  email: { type: String, required: true, unique: true },
-  dob: { type: Date },
-  meta: { type: MetaSchema },
-});
+UserSchema.plugin(leanVirtuals);
+UserSchema.plugin(paginate);
 
-type User = mongoose.Model<UserI>;
+type User = PaginateModel<UserI>;
 
-const User = mongoose.model<UserI>('Users', UserSchema);
+const User = model<UserI>('Users', UserSchema) as User;
 
 export default User;

@@ -1,5 +1,5 @@
 import queries from './queries';
-import { DbClient } from '../../utils/args';
+import { DbClient } from '@ehbraheem/api';
 
 describe('App Query', () => {
   it('Create a query object', () => {

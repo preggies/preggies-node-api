@@ -1,15 +1,16 @@
-import { getUser, getAllUser, createUser, ROUTE_NAME } from './controllers';
+import create, { get as getUser, getAll, ROUTE_NAME } from './controllers';
 import { Router } from 'express';
+import { RouteArgs } from '@ehbraheem/api';
 
 export const MOUNT_POINT = `/${ROUTE_NAME}`;
 
-export default ({ router, services, validator, json }): Router => {
-  router.route('/:uuid').get(getUser({ services, json, validator }));
+export default ({ router, services, validator, json }: RouteArgs): Router => {
+  router.route('/:id').get(getUser({ services, json, validator }));
 
   router
     .route('/')
-    .get(getAllUser({ services, json }))
-    .post(createUser({ services, json, validator }));
+    .get(getAll({ services, json, validator }))
+    .post(create({ services, json, validator }));
 
   return router;
 };

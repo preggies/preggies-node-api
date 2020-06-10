@@ -1,5 +1,5 @@
 export const verifyUser = (user): void => {
-  ['fullname', 'email', 'meta', 'uuid', 'dob'].forEach(k => {
+  ['fullname', 'email', 'meta', 'role', 'dob'].forEach(k => {
     expect(user).toHaveProperty(k);
   });
 };

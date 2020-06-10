@@ -1,22 +1,23 @@
 import services from '../services';
 import { NotFound } from '../utils/errors';
+import { objectId } from '../utils/regex';
+
+jest.mock('@ehbraheem/service-utils', () => ({
+  __esModule: true,
+  hash: {
+    generate: jest.fn().mockReturnValue(true),
+  },
+}));
 
 const user = {
   fullname: 'Bolatan Ibrahim',
   email: 'test@preggies.co',
   dob: '2020-04-18T12:16:43.636Z',
-  uuid: 'd48501c0-e9bf-4f3c-8d32-5a58668ab1bc',
+  id: '5c3cad20a5676122753b33ba',
 };
 
 const json = jest.fn().mockReturnValue(() => ({
-  users: [
-    {
-      fullname: 'Bolatan Ibrahim',
-      email: 'test@preggies.co',
-      dob: '2020-04-18T12:16:43.636Z',
-      uuid: 'd48501c0-e9bf-4f3c-8d32-5a58668ab1bc',
-    },
-  ],
+  users: [user],
 }));
 
 const verify = (response): void => {
@@ -30,14 +31,9 @@ const verify = (response): void => {
 const db = {
   users: {
     findById: jest.fn().mockImplementation(
-      ({ payload: { uuid } }) =>
+      ({ payload: { id } }) =>
         new Promise((resolve, reject) => {
-          uuid &&
-          /\b(?=([0-9A-F]{8})\b)\1-(?=([0-9A-F]{4}))\2-(?=(4[0-9A-F]{3}))\3-(?=([89AB][0-9A-F]{3}))\4-(?=([0-9A-F]{12}))\5\b/i.test(
-            uuid
-          )
-            ? resolve(user)
-            : reject(new NotFound());
+          id && objectId.test(id) ? resolve(user) : reject(new NotFound());
         })
     ),
     create: jest.fn().mockImplementation(
@@ -46,7 +42,7 @@ const db = {
           fullname && email ? resolve(user) : reject(new Error('DB error.'));
         })
     ),
-    findAll: jest.fn().mockResolvedValue([user]),
+    findAll: jest.fn().mockResolvedValue({ docs: [user] }),
   },
 };
 
@@ -74,7 +70,7 @@ describe('Services: Users', () => {
     it('returns stringified format of fetched user', async () => {
       const { users } = services(db);
 
-      const expected = await users.findById({ payload: { uuid: user.uuid }, json });
+      const expected = await users.findById({ payload: { id: user.id }, json });
       expect(expected).toHaveProperty('users');
       expect(expected['users']).toHaveLength(1);
 
@@ -86,16 +82,18 @@ describe('Services: Users', () => {
       const { users } = services(db);
 
       await expect(
-        users.findById({ payload: { uuid: 'bdhh-ggdcs-3432' }, json })
-      ).rejects.toThrowError('{"error":"Not Found."}');
+        users.findById({ payload: { id: '5c3cad20a5676122753b33' }, json })
+      ).rejects.toThrowError('Not Found.');
     });
   });
 
   describe('.findAll', () => {
+    const payload = { limit: 10, page: 1, role: '5e594cf8a6d34546192af747' };
+
     it('returns stringified format of all users', async () => {
       const { users } = services(db);
 
-      const expected = await users.findAll({ json });
+      const expected = await users.findAll({ json, payload });
       expect(expected).toHaveProperty('users');
       expect(expected['users']).toHaveLength(1);
 
@@ -106,12 +104,12 @@ describe('Services: Users', () => {
     it('throws an error when no user in DB', async () => {
       const db = {
         users: {
-          findAll: jest.fn().mockResolvedValue([]),
+          findAll: jest.fn().mockResolvedValue({ docs: [] }),
         },
       };
       const { users } = services(db);
 
-      await expect(users.findAll({ json })).rejects.toThrowError('{"error":"Not Found."}');
+      await expect(users.findAll({ json, payload })).rejects.toThrowError('Not Found.');
     });
   });
 });

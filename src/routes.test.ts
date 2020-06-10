@@ -1,9 +1,9 @@
 import routes from './routes';
+import { Dict } from '@ehbraheem/api';
+import { config, validator, json } from '../test/utils/controllerHelpers';
+import { emptyFn } from '../test/utils/mock';
 
-const config = jest.fn();
-const services = jest.fn();
-const validator = jest.fn();
-const json = jest.fn();
+const services = emptyFn<Dict>();
 
 describe('./routes', () => {
   describe('.default', () => {

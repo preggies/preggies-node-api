@@ -1,10 +1,16 @@
 import jsonSchema from './json';
 import { DuplicateError, ServerError, NotPersisted, NotFound } from '../utils/errors';
+import { hash } from '@ehbraheem/service-utils';
+import { Dict, Crud } from '@ehbraheem/api';
+import { UserI } from '../persistence/mongoose/User/model';
+import { PaginateResult } from 'mongoose';
+import { responseDocumentSchema } from '../utils/schemas';
 
 const create = async ({ db, payload, json }): Promise<string> => {
   let user;
+  const hashedPassword = await hash.generate(payload.password, 12);
   try {
-    user = await db.users.create({ payload });
+    user = await db.users.create({ payload: { ...payload, password: hashedPassword } });
     if (!user) {
       throw new NotPersisted('User');
     }
@@ -18,7 +24,7 @@ const create = async ({ db, payload, json }): Promise<string> => {
     }
   }
 
-  return json(jsonSchema)({ users: [user] });
+  return json(responseDocumentSchema(jsonSchema))({ data: [user] });
 };
 
 const findById = async ({ db, payload, json }): Promise<string> => {
@@ -28,20 +34,26 @@ const findById = async ({ db, payload, json }): Promise<string> => {
     throw new NotFound();
   }
 
-  return json(jsonSchema)({ users: [user] });
+  return json(responseDocumentSchema(jsonSchema))({ data: [user] });
 };
 
 const findAll = async ({ db, payload, json }): Promise<string> => {
-  const users = await db.users.findAll({ payload });
+  const users = (await db.users.findAll({ payload })) as PaginateResult<UserI>;
 
-  if (!users || !users.length) {
+  if (!users) {
     throw new NotFound();
   }
 
-  return json(jsonSchema)({ users });
+  if (!users.docs.length) {
+    throw new NotFound();
+  }
+
+  const { docs } = users;
+
+  return json(responseDocumentSchema(jsonSchema))({ data: docs });
 };
 
-export default (db): object => ({
+export default (db: Dict): Crud<string> => ({
   create: async ({ payload, json }) =>
     create({
       db,

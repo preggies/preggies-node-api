@@ -1,13 +1,17 @@
+import { objectId, uuidV4 } from '../../src/utils/regex';
+
 declare global {
   namespace jest {
     interface Matchers<R> {
       containExactly: (array: any[]) => CustomMatcherResult;
       toBeValidUUID: () => CustomMatcherResult;
+      toBeValidObjectId: () => CustomMatcherResult;
     }
 
     interface Expect {
       containExactly: (array: any[]) => CustomMatcherResult;
       toBeValidUUID: () => CustomMatcherResult;
+      toBeValidObjectId: () => CustomMatcherResult;
     }
   }
 }
@@ -15,10 +19,15 @@ declare global {
 export default expect.extend({
   toBeValidUUID(value) {
     return {
-      pass: /\b(?=([0-9A-F]{8})\b)\1-(?=([0-9A-F]{4}))\2-(?=(4[0-9A-F]{3}))\3-(?=([89AB][0-9A-F]{3}))\4-(?=([0-9A-F]{12}))\5\b/i.test(
-        value
-      ),
+      pass: uuidV4.test(value),
       message: () => `${value} not a valid uuid.v4`,
+    };
+  },
+
+  toBeValidObjectId(value) {
+    return {
+      pass: objectId.test(value),
+      message: () => `${value} not a valid MongoDB ObjectID`,
     };
   },
 

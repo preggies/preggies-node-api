@@ -1,7 +1,8 @@
-import app, { PORT, secure } from './server';
+import application, { PORT, secure } from './server';
 
 /* eslint-disable no-console */
 (async (): Promise<void> => {
+  const app = await application();
   const server = secure
     ? require('https').createServer(
         {

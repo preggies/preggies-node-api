@@ -1,4 +1,4 @@
-import { DbClient, Dict } from '../../utils/args';
+import { DbClient, Dict } from '@ehbraheem/api';
 
 import users from './User/queries';
 
